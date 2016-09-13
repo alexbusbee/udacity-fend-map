@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<title>Map</title>
+	<link rel="stylesheet" href="_css/styles.css">
+</head>
+<body>
+
+<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+<script>
+var name = "Gesu_Church_(Milwaukee,_Wisconsin)";
+function getWiki(name) {
+    var url = "https://en.wikipedia.org/w/api.php?action=query&prop=pageprops%7Cextracts&exintro=&explaintext=&format=json&callback=?&titles=" + name;
+        $.getJSON(url, function(data) {
+            var pageId = Object.keys(data.query.pages)[0];
+            intro = data.query.pages[pageId].extract;
+            image = data.query.pages[pageId].pageprops.page_image;
+            console.log(intro);
+            console.log(image);
+        });          
+}
+getWiki(name);
+</script>
+</body>
+</html>

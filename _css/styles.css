@@ -1,0 +1,55 @@
+html, body {
+  	height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    font-family: BlinkMacSystemFont;
+}
+#map {
+	height: 100%;
+}
+#search {
+	float: left;
+	width: 20%;
+	height: 100%;
+	border-right: 1px solid black;
+	padding: 10px 30px 10px 30px;
+}
+#search input[type=search] {
+	-webkit-appearance: none;
+	width: 100%;
+	line-height: 3em;
+	font-size: 1em;
+	padding-left: .5em;
+}
+ul {
+	list-style-type: none;
+	margin-left: -40px;
+}
+li {
+	margin-bottom: 1em;
+	font-size: 1.25em;
+    font-weight: bold;
+}
+/* phones/tablets */
+@media only screen and (max-width: 700px) {
+	#map {
+		width: 100%;
+	}
+	#search {
+		width: 100%;
+        height: 30%;
+	}
+	li {
+		font-size: .75em;
+	}
+	#search input[type=search] {
+		width: 80%;
+	}
+}
+input[type=text]::-ms-clear {  display: none; width : 0; height: 0; }
+input[type=text]::-ms-reveal {  display: none; width : 0; height: 0; }
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }

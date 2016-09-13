@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<title>Map</title>
+	<link rel="stylesheet" href="_css/styles.css">
+</head>
+<body>
+
+    <div id="search">      
+    	<input placeholder="Search locations..." type="search" name="q" data-bind="value: Query, valueUpdate: 'keyup'" autocomplete="off" />
+    	<ul data-bind="foreach: searchResults">
+    		<li data-bind="text: title"></li>
+            <!--<li data-bind="text: title, click: goToPin"></li>-->
+    	</ul>
+    </div>
+    <div id="map"></div>
+
+<script src="_js/knockout.js"></script>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+<script src="_js/model.js"></script>
+<script src="_js/map.js"></script>
+<script src="_js/view-model.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAReLON0x7fQpJ9VJo01lbWp-_Z2hUxm-0&callback=initMap" async defer></script>
+</body>
+</html>
