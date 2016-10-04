@@ -1,21 +1,36 @@
-var viewModel = {
-    markers: ko.observableArray(markers)
+var myViewModel;
+
+var Building = function(data) {
+	this.title = data.title;
 };
 
-viewModel.Query = ko.observable('');
+var ViewModel = function () {
+	var self = this;
+    this.campus = ko.observableArray(markers);
 
-viewModel.searchResults = ko.computed(function() {
-    var q = viewModel.Query();
-    return markers.filter(function(i) {
-        return i.title.toLowerCase().indexOf(q) >= 0;
+    this.campus().forEach(function(building, i) {
+    	building.marker = pins[i];
     });
-});
-/*
-viewModel.goToPin = ko.computed(function() {
-    infowindows[this.index].open(map, markers[this.index]);
-    map.panTo(markers[this.index].getPosition());
-});
-*/
 
+    this.query = ko.observable('');
 
-ko.applyBindings(viewModel);
+    // Make map markers disappear when user is using search function
+    this.searchResults = ko.computed(function() {
+	    var q = self.query();
+	    return self.campus().filter(function(building) {
+	    	var match = building.title.toLowerCase().indexOf(q) >= 0;
+	    	if (match) {
+	    		building.marker.setVisible(true);
+	    	} else {
+	    		building.marker.setVisible(false);
+	    	}
+
+	        return match;
+	 	});
+	 });
+    
+    // Make map markers animate when list item clicked
+    self.selectLocation = function(clickedLocation) {
+        google.maps.event.trigger(marker, 'click');
+    }
+};
