@@ -31,6 +31,7 @@ var ViewModel = function () {
     
     // Make map markers animate when list item clicked
     self.selectLocation = function(clickedLocation) {
+    	var marker = clickedLocation.marker;
         google.maps.event.trigger(marker, 'click');
     }
 };

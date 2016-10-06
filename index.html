@@ -11,7 +11,7 @@
     <div id="search">      
     	<input placeholder="Search Marquette's campus..." type="search" name="q" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off" />
     	<ul data-bind="foreach: searchResults">
-    		<li data-bind="text: title, click: selectLocation"></li>
+    		<li data-bind="text: title, click: $root.selectLocation"></li>
     	</ul>
     </div>
     <div id="map"></div>
