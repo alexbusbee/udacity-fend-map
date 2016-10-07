@@ -30,21 +30,23 @@ var infowindows = [];
 var pins = [];
 
 function initMap() {
+    console.log("initMap");
     var map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 43.0378777, lng: -87.9306865 },
+        scrollwheel: false,
         zoom: 16
     });
 
-    // Adding the map markers
     for (i in markers) {
         var pin = new google.maps.Marker({
             position: markers[i].latLng,
             map: map,
             title: markers[i].title,
         });
-        pin.addListener('click', toggleBounce);
+        pin.addListener('click', toggleBounce);        
         pins.push(pin);
     }
+
 
     // Use Wiki API to GET JSON info then output to variables
     var wikiTitles = [];
@@ -63,7 +65,6 @@ function initMap() {
         var wikiInfos = [],
             data = json.query.pages;
         $.each(data, function(key, value) {
-            // In case there is no Wikipedia page for the location
             if (value.extract == null) {
                 wikiInfos.push({
                     title: value.title,
@@ -82,8 +83,9 @@ function initMap() {
         });
 
         for (i in pins) {            
+    
             pins[i].index = i; // add index property
-            contents[i] = '<div class="popup_container"><h1>' + markers[i].title +'</h1>' + '<p>' + wikiInfos[i].extract + '</p><p><a href="https://en.wikipedia.org/wiki/' + wikiTitles[i] + '">Learn more</a>.</p><p><em>(Source: Wikipedia)</em></p></div>';
+            contents[i] = '<div class="popup_container"><h1>' + markers[i].title +'</h1>' + '<p>' + wikiInfos[i].extract + '</p><p><a href="https://en.wikipedia.org/wiki/' + wikiTitles[i] + '">Learn more</a>.</p></div>';
 
             infowindows[i] = new google.maps.InfoWindow({
                 content: contents[i],
@@ -99,6 +101,7 @@ function initMap() {
 
     function fail() {
         for (i in pins) {
+
             pins[i].index = i; // add index property
             contents[i] = '<div class="popup_container"><h1>' + markers[i].title +'</h1>' + '<p>Failed to retrieve Wikipedia info.</p><p>For information about this location, <a href="https://en.wikipedia.org/wiki/' + wikiTitles[i] + '">please visit the Wikipedia page</a> .</p></div>';
 
