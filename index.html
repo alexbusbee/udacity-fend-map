@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<title>Map</title>
 	<link rel="stylesheet" href="_css/styles.css">
 </head>
 <body>
 
-    <div id="search">      
+    <nav id="search">      
     	<input placeholder="Search Marquette's campus..." type="search" name="q" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off" />
     	<ul data-bind="foreach: searchResults">
     		<li data-bind="text: title, click: $root.selectLocation"></li>
     	</ul>
-    </div>
-    <div id="map"></div>
+    </nav>
+    <section id="map"></section>
 
 <script src="_js/knockout.js"></script>
 <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
 <script src="_js/model.js"></script>
 <script src="_js/map.js"></script>
 <script src="_js/view-model.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAReLON0x7fQpJ9VJo01lbWp-_Z2hUxm-0&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAReLON0x7fQpJ9VJo01lbWp-_Z2hUxm-0&callback=initMap" async defer onerror="googleError()"></script>
 </body>
 </html>

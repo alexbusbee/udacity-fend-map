@@ -33,5 +33,5 @@ var ViewModel = function () {
     self.selectLocation = function(clickedLocation) {
     	var marker = clickedLocation.marker;
         google.maps.event.trigger(marker, 'click');
-    }
+    };
 };
