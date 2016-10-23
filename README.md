@@ -9,4 +9,4 @@
 	- If running a [PHP server](http://php.net/manual/en/features.commandline.webserver.php), use the terminal to navigate to the repository and use the command "php -S localhost:[port-number]".
 1. Open a browser and navigate to your localhost to run the app.
 
-*Big thank you to Karol for his help in our one-on-one.*
+*Big thank you to Karol and Sarah for their help in our one-on-ones.*

@@ -1,5 +1,6 @@
-var pins;
-
+var pins,
+    infowindow, 
+    wikiRequestTimeout;
 
 // See if Google Maps loaded correctly
 function googleError() {
@@ -31,17 +32,21 @@ function initMap() {
         center: { lat: 43.0378777, lng: -87.9306865 },
         scrollwheel: false,
         zoom: 16
-    });   
+    });
+
+    infowindow = new google.maps.InfoWindow({
+      maxWidth: 300
+    });
 
     for (var i in markers) {
-      if(markers.hasOwnProperty(i)) {        
+      if(markers.hasOwnProperty(i)) {
         var pin = new google.maps.Marker({
             position: markers[i].latLng,
             map: map,
             title: markers[i].title,
-        });        
+        });
         pin.setAnimation(google.maps.Animation.BOUNCE);
-        stopAnimation(pin);          
+        stopAnimation(pin);
         pins.push(pin);
       }
     }
@@ -57,16 +62,23 @@ function initMap() {
     function getWiki() {
         var titlesString = wikiTitles.join().replace(/,(?!_)/g, "|"),
             url = "https://en.wikipedia.org/w/api.php?action=query&prop=pageprops%7Cextracts&exintro=&explaintext=&format=json&exlimit=max&utf8&callback=?&titles=" + titlesString;
+
+        wikiRequestTimeout = setTimeout(function() {
+          alert("Wikipedia is unavailable. Please try again later.");
+        }, 5000);
+
         return $.getJSON(url);
     }
 
-    $.when(getWiki()).then(success, fail);     
+    $.when(getWiki()).then(success, fail);
 
     function success(json) {
+        clearTimeout(wikiRequestTimeout);
         var wikiInfos = [],
             data = json.query.pages;
+
         $.each(data, function(key, value) {
-            if (value.extract === null) {
+            if (value.extract == null) {
                 wikiInfos.push({
                     title: value.title,
                     extract: "No Wikipedia info for this location."
@@ -83,39 +95,54 @@ function initMap() {
             return compare(el1, el2, "title");
         });
 
-        for (i in pins) {            
+        for (i in pins) {
           if(pins.hasOwnProperty(i)) {
             pins[i].index = i; // add index property
-            contents[i] = '<div class="popup_container"><h1>' + markers[i].title +'</h1>' + '<p>' + wikiInfos[i].extract + '</p><p><a href="https://en.wikipedia.org/wiki/' + wikiTitles[i] + '">Learn more</a>.</p></div>';
+            pins[i].content = '<div class="popup_container"><h1>' + markers[i].title +
+                          '</h1>' + '<p>' + wikiInfos[i].extract +
+                          '</p><p><a href="https://en.wikipedia.org/wiki/' +
+                          wikiTitles[i] + '">Learn more</a>.</p></div>';
 
-            infowindows[i] = new google.maps.InfoWindow({
-                content: contents[i],
-                maxWidth: 300
+            google.maps.event.addListener(pins[i], 'click', function() {
+                var marker = pins[this.index];
+
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+
+                setTimeout(function(){
+                  marker.setAnimation(null);
+                }, 750);
+
+                infowindow.setContent( marker.content);
+
+                infowindow.open(map, marker);
+                map.panTo(marker.getPosition());
             });
-
-    google.maps.event.addListener(pins[i], 'click', function() {
-        infowindows[this.index].open(map, pins[this.index]);
-        map.panTo(pins[this.index].getPosition());
-    });            
           }
         }
     }
 
-    function fail() {   
+    function fail() {
         for (i in pins) {
           if(pins.hasOwnProperty(i)) {
             pins[i].index = i; // add index property
-            contents[i] = '<div class="popup_container"><h1>' + markers[i].title +'</h1>' + '<p>Failed to retrieve Wikipedia info.</p><p>For information about this location, <a href="https://en.wikipedia.org/wiki/' + wikiTitles[i] + '">please visit the Wikipedia page</a> .</p></div>';
-
-            infowindows[i] = new google.maps.InfoWindow({
-                content: contents[i],
-                maxWidth: 300
-            });
+            pins[i].content = '<div class="popup_container"><h1>' + markers[i].title +'</h1>' + 
+            '<p>Failed to retrieve Wikipedia info.</p><p>For information about this location, <a href="https://en.wikipedia.org/wiki/' + 
+            wikiTitles[i] + '">please visit the Wikipedia page</a> .</p></div>';
 
             google.maps.event.addListener(pins[i], 'click', function() {
-        infowindows[this.index].open(map, pins[this.index]);
-        map.panTo(pins[this.index].getPosition());
-    });            
+                var marker = pins[this.index];
+
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+
+                setTimeout(function(){
+                  marker.setAnimation(null);
+                }, 750);
+
+                infowindow.setContent( marker.content);
+
+                infowindow.open(map, marker);
+                map.panTo(marker.getPosition());
+            });
           }
         }
     }
